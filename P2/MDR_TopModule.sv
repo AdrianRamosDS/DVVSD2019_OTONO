@@ -2,7 +2,7 @@
 * Nombre del módulo: MDR_TopModule.sv
 * Descripción:			Realiza multiplicación, división y raíz cuadrada de números de 16 bits cada uno
 * Autor:					Adrián Ramos Pérez
-* Fecha:					29/08/2019
+* Fecha:					27/03/2019
 ******************************************************************************************************************************************/
 module MDR_TopModule
 import mdr_pkg::*;
