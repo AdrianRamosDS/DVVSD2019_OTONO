@@ -1,16 +1,14 @@
 module SQRT_module
 import mdr_pkg::*;
 (
-	input 				clk,
-	input					rst,
-	input					start,
+	input 				clk, rst, start,
 	input 	[DW-1:0] Data,
 	input 	[DW-1:0] sumador_out,
-	
+
+	output				Ready,
+	output 				op_sel,	
 	output	[DW-1:0] Result,
 	output	[DW-1:0] Reminder,
-	output				Ready,
-	output 				op_sel,
 	output 	[DW-1:0]	mux2sum1,
 	output 	[DW-1:0]	mux2sum2
 );
@@ -18,7 +16,8 @@ wire count_flag_w, count_enb_w, sync_rst_enb_w, reg_enb_w, Q_reg_enb_w, R_reg_en
 wire [4:0] count_shift_w;
 wire [DW-1:0] muxQretro_w, muxR_retro_w, concat_out_w, D_out_w, Q_out_w, R_out_w, shift2or_w, i_shift2or_w, R_final_out_w;
 wire [DW-1:0] Q_final_out_w, mux1or3_out_w, Qshifted2or_w, Qshifted1or3_w , or2sum_w;
-//wire [DW-1:0] mux2sum1_w, mux2sum2_w, sumador_out_w;
+wire [DW-1:0] mux2sum1_w, mux2sum2_w; 
+//wire [DW-1:0] sumador_out;
 
 SQRT_Control_Unit SQRT_Control_Unit // VERIFICADO
 (
@@ -125,19 +124,21 @@ Or_module Qshifted1or0 //VERIFICADO
 Mux2a1_16 Raiz_residuoNeg2suma_1_modulo //VERIFICADO
 (
 	.Data_0(or2sum_w), .Data_1({Q_final_out_w[14:0],1'b1}), .Selector(R_final_out_w[15]),
-	.Mux_Output(mux2sum1)
+	.Mux_Output(mux2sum1_w)
 );
 Mux2a1_16 Raiz_residuoNeg2suma_2_modulo //VERIFICADO
 (
 	.Data_0(Qshifted1or3_w),	.Data_1(R_final_out_w),	.Selector(R_final_out_w[15]),
-	.Mux_Output(mux2sum2)
+	.Mux_Output(mux2sum2_w)
 );
-/*Adder_16 General_adder //VERIFICADO
+/*Adder General_adder //VERIFICADO
 (
-	.A_input(mux2sum1_w), .B_input(mux2sum2_w), .Op_sel(R_out_w[15]),
-	.C_output(sumador_out_w)
+	.A_input({{DW+1{1'b0}},mux2sum1_w}), .B_input({{DW+1{1'b0}},mux2sum2_w}), .Op_sel(R_out_w[15]),
+	.C_output(sumador_out)
 );*/
 
+assign mux2sum1 = mux2sum1_w;
+assign mux2sum2 = mux2sum2_w;
 assign Result = Q_final_out_w;
 assign Reminder = R_final_out_w;
 assign op_sel = R_final_out_w[15];

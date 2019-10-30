@@ -1,34 +1,33 @@
 module DIVIDER_module
 import mdr_pkg::*;
 (
-	input 		    clk,
-	input			    rst,
-	input			    start,
+	input 		    clk, rst, start,
+	input  [DW-1:0] Dividendo, Divisor,
 	input  [DW-1:0] adder_out,
-	input  [DW-1:0] Dividendo,
-	input  [DW-1:0] Divisor,
+
+	output 			 Ready,
 	output [DW-1:0] Result,
 	output [DW-1:0] Reminder,
-	output 			 Ready,
 	output [DW-1:0] mux2resta,
 	output [DW-1:0] mux2resta2
 );
-wire mux_enb_w, sync_rst_enb_w;
-wire [DW-1:0] dividendo_out_w, adder_out_w, mux2resta_w, reminder_mux_out_w, reminder_out_w;
+wire mux_enb_w, sync_rst_enb_w, result_enb, reminder_enb_w;
+wire [DW-1:0] dividendo_out_w, mux2resta_w, reminder_mux_out_w, reminder_out_w, count2result_w;
+//wire [DW-1:0] adder_out;
 
 DIV_Control_Unit CONTROL_UNIT( //Verificado
 	.clk(clk),	.rst(rst),	.count_flag(~adder_out[15]),	.start(start),
 	.enb_mux(mux_enb_w),
 	.enb_sync_rst(sync_rst_enb_w), 
-	.enb_reg(), 
-	.enb_ready(),
-	.enb_count()
+	.enb_reg(reminder_enb_w), 
+	.enb_ready(Ready),
+	.enb_count(result_enb)
 );
 
 DIV_Counter Counter //Verificado
 (
 	.clk(clk),	.rst(rst),	.enb(~adder_out[15]),	.sync_rst(sync_rst_enb_w),
-   .Counting_output(Result),	.flag_mux(),	.flag_SM()
+   .Counting_output(count2result_w),	.flag_mux(),	.flag_SM()
 );
 
 PIPO_16 DIVIDENDO_RGSTR //Verificado
@@ -48,16 +47,21 @@ Mux2a1_16 Residuo_Input_Mux //Verificado
 	.Mux_Output(reminder_mux_out_w)
 );
 
-PIPO_16 RESIDUO //Verificado
+PIPO_16 RESIDUO_RGSTR //Verificado
 (
-	.clk(clk),	.rst(rst),	.enb(adder_out[15]),	.sync_rst(sync_rst_enb_w),		.data(reminder_mux_out_w),
-	.out(reminder_out_w)	
+	.clk(clk),	.rst(rst),	.enb(reminder_enb_w),	.sync_rst(sync_rst_enb_w),		.data(~(reminder_mux_out_w)+1),
+	.out(Reminder)	
+);
+PIPO_16 RESULTADO_RGSTR //Verificado
+(
+	.clk(clk),	.rst(rst),	.enb(result_enb),	.sync_rst(sync_rst_enb_w),		.data(count2result_w),
+	.out(Result)	
 );
 /* *********************************************************************** */
-/*Adder_16 General_Adder
+/*Adder General_Adder
 (
-	.A_input(mux2resta_w),	.B_input(Divisor),	.Op_sel(1'b0),
-	.C_output(adder_out_w)
+	.A_input({{DW+1{1'b0}},mux2resta_w}),	.B_input({{DW+1{1'b0}},Divisor}),	.Op_sel(1'b0),
+	.C_output(adder_out)
 );*/
 
 assign mux2resta = mux2resta_w;
