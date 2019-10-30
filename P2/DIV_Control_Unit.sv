@@ -1,9 +1,7 @@
 module DIV_Control_Unit
 import mdr_pkg::*;
 (
-	input clk,
-	input rst,
-	input start, 
+	input clk, rst, start, 
 	input count_flag,
 	
 	output logic enb_mux,
@@ -67,7 +65,7 @@ always_comb begin
 			PROCESS:	begin
 				enb_mux = 1;
 				enb_sync_rst = 0;
-				enb_reg = 1;// SE DEJA EN 0 PORQUE VA CONECTADO AL SELECTOR DEL MUX DEL REGISTRO P
+				enb_reg = 1;
 				enb_ready = 0;
 				enb_count = 0;
 			end

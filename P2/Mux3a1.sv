@@ -12,13 +12,13 @@ wire [DW_DBL:0] Mux1_w;
 
 Mux2a1 Mux1
 (
-	.Selector(Sel[1]),  .Data_0(A_Input),	.Data_1(B_Input),
+	.Selector(Sel[0]),  .Data_0(A_Input),	.Data_1(B_Input),
 	.Mux_Output(Mux1_w)
 );
 
 Mux2a1 Mux_2
 (
-	.Selector(Sel[0]), .Data_0(Mux1_w),	.Data_1(C_Input),
+	.Selector(Sel[1]), .Data_0(Mux1_w),	.Data_1(C_Input),
 	.Mux_Output(Output_Data)
 );
 

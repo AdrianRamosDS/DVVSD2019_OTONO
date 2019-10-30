@@ -22,29 +22,29 @@ always_ff@(posedge clk or negedge rst) begin
 				case(State)
 				
 				IDLE: 
-				if(start == 1)
+				if(start == 0)
 					State <= IDLE;
-				else if(start == 0)
+				else if(start == 1)
 					State <= SETUP;
 					
 				SETUP:
 					State <= LOADX;
 					
 				LOADX:
-					if(load == 1)
+					if(load == 0)
 						State <= LOADX;
-					else if(load == 0)
+					else if(load == 1)
 						State <= LOADY;
 						
 				LOADY:
-					if(load == 1)
+					if(load == 0)
 						State <= LOADY;
-					else if(load == 0)
+					else if(load == 1)
 						State <= OP;
 				OP:
-					if(load == 1)
+					if(load == 0)
 						State <= OP;
-					else if(load == 0)
+					else if(load == 1)
 						State <= PROCESS;
 					
 				PROCESS:
@@ -86,7 +86,7 @@ always_comb begin
 		enable_ready=1;
 		enable_error=1;
 		load_x=1;
-		load_Y=1;
+		load_Y=0;
 		load_op=0;
 	end
 	

@@ -1,10 +1,7 @@
 module SQRT_Control_Unit
 import mdr_pkg::*;
 (
-	input clk,
-	input rst,
-	input count_flag,
-	input start, 
+	input clk, rst, start, count_flag,
 	
 	output logic enable_cont,
 	output logic enable_sync_rst, 
@@ -21,26 +18,33 @@ always_ff@(posedge clk or negedge rst) begin
 		State <= READY;
 	else
 		case(State)
+		
 			IDLE: 
-			if(start == 0)
-				State <= IDLE;
-			else if(start == 1)
-				State <= RST;
+				if(start == 0)
+					State <= IDLE;
+				else if(start == 1)
+					State <= RST;
 			RST:
 				State <= SETUP;
+				
 			SETUP:
 				State <= PROCESS;
+				
 			PROCESS:
 				if(count_flag == 0)
 					State <= PROCESS;
 				else if(count_flag == 1)
 					State <= SIGNO;
+					
 			SIGNO:
 				State <= SIGNO2;
+				
 			SIGNO2:
 				State <= READY;
+				
 			READY:
 				State <= IDLE;
+				
 			default:
 				State <= READY;
 		endcase	

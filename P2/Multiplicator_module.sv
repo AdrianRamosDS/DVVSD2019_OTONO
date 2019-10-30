@@ -1,9 +1,7 @@
 module Multiplicator_module
 import mdr_pkg::*;
 (
-	input 			  clk,
-	input				  rst,
-	input				  start,
+	input 			  clk, rst, start,
 	input	[DW_DBL:0] adder_out,
 	input [DW-1:0]   Multiplicando,
 	input [DW-1:0]   Multiplicador,
@@ -29,7 +27,7 @@ MULT_Control_Unit MULT_CONTROL_UNIT
 	.enable_cont(count_enb_w),
 	.enable_sync_rst(sync_rst_enb_w),
 	.enable_reg(enb_w),
-	.enable_ready(ready_enb_w),
+	.enable_ready(Ready),
 	.enable_shift(shift_enb_w)
 );
 

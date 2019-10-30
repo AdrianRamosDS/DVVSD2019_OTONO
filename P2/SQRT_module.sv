@@ -141,7 +141,7 @@ assign mux2sum1 = mux2sum1_w;
 assign mux2sum2 = mux2sum2_w;
 assign Result = Q_final_out_w;
 assign Reminder = R_final_out_w;
-assign op_sel = R_final_out_w[15];
+assign op_sel = R_out_w[15];
 
 /* **************************************************** */
 endmodule

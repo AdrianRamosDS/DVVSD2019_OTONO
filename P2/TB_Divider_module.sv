@@ -5,7 +5,7 @@ module TB_Divider_module;
 	logic start;
 	logic [15:0] Dividendo = 0;
 	logic [15:0] Divisor = 0;
-	
+	logic 		 Ready;
 	logic [15:0] Result;
 	logic [15:0] Reminder;
 
@@ -17,6 +17,7 @@ DIVIDER_module DUV
 	.Dividendo(Dividendo),
 	.Divisor(Divisor),
 	
+	.Ready(Ready),
 	.Result(Result),
 	.Reminder(Reminder)
 );
@@ -35,9 +36,10 @@ end
 /*********************************************************/
 initial begin // enable
 	#6 start = 0;
-	Dividendo = 152;
-	Divisor = 3;
+	Dividendo = 59;
+	Divisor = 6;
 	#10 start = 1;
+	#20 start = 0;
 
 end
 
