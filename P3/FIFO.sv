@@ -13,25 +13,25 @@ wire [AW_FIFO-1:0]element_number_wire;
 
 simple_dual_port_ram_single_clock Memoria_RAM
 (
-	.clk(clk),	.we(push_input&~full),	.data(DataInput),	.read_addr(address_Read),	.write_addr(address_Write),
+	.clk(clk),	.we(push & ~full),	.data(DataInput),	.read_addr(address_Read),	.write_addr(address_Write),
 	.q(DataOutput)
 );
 
-Contador_lineal #(	.Maximum_Value(2**AW_FIFO-1)) contador_pop_modulo
+Counter_linear #(	.Maximum_Value(2**AW_FIFO-1)) contador_pop_modulo
 (
-	.clk(clk),	.rst(rst),	.enb(pop_input&~empty),	.sync_rst(1'b0),	
+	.clk(clk),	.rst(rst),	.enb(pop & ~empty),	.sync_rst_enb(1'b0),	
 	.Flag(),		.Counting(address_Read) 
 );
 
-Contador_lineal #(	.Maximum_Value(2**AW_FIFO-1)) contador_push_modulo
+Counter_linear #(	.Maximum_Value(2**AW_FIFO-1)) contador_push_modulo
 (
-	.clk(clk),	.rst(rst),	.enb(push_input&~full),	.sync_rst(1'b0),
+	.clk(clk),	.rst(rst),	.enb(push &~ full),	.sync_rst_enb(1'b0),
 	.Flag(),		.Counting(address_Write) 
 );
 
-Contador_circular #(	.Maximum_Value(2**AW_FIFO-1)) contador_NumTotal_modulo
+Counter_circular #(	.Maximum_Value(2**AW_FIFO-1)) contador_NumTotal_modulo
 (
-	.clk(clk),	.rst(rst),	.enb((push_input&~full) | (pop_input&~empty)),	.sync_rst(1'b0),	.op(push_input),
+	.clk(clk),	.rst(rst),	.enb((push &~ full) | (pop & ~empty)),	.sync_rst_enb(1'b0),	.op(push),
 	.Flag(),		.Counting(element_number_wire) 
 );
 
