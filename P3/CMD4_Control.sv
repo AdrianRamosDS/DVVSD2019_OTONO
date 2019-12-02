@@ -2,10 +2,9 @@ module CMD4_Control
 import mxv_pkg::*;
 (
 	// Input Ports
-	input clk, rst,
+	input clk, rst, Flag_Rx,
 	input [7:0]UART_Rx,
-	input Flag_Rx,
-	input [7:0]N_input,
+	input [3:0]N_input,
 	
 	// Output Ports
 	output logic enable_FIFO,//comenzar a contar ciclos

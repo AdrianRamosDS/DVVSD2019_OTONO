@@ -1,26 +1,20 @@
 module CMD3_Control
 import mxv_pkg::*;
 (
-	// Input Ports
-	input clk, rst,
+	input clk, rst, Flag_Rx,
 	input [7:0]UART_Rx,
-	input Flag_Rx,
-	input [7:0]N_input,
+	input [3:0]N_input,
 	
-	// Output Ports
 	output logic [7:0]enable_FIFO,//comenzar a contar ciclos
 	output logic enable_cont_SM //limpiar registros
 );
-
 
 wire matrix_end_flag_wire;
 wire enable_FIFO_flag_wire;
 bit enable_cont_fila;
 wire [3:0]select_FIFO_wire;
 
-
 enum logic [2:0]{FE, L, CMD, MATRIZ, EF} State;
-
 
 CounterParameter
 contador_fila
@@ -62,7 +56,7 @@ else
 				State <= L;
 			else if(Flag_Rx == 1)
 			begin
-				if(UART_Rx == N_input*N_input+2)
+				if( (UART_Rx ==8'h18|UART_Rx ==8'h27|UART_Rx ==8'h38|UART_Rx ==8'h51|UART_Rx ==8'h66) )
 					State <= CMD;
 				else
 					State <= FE;

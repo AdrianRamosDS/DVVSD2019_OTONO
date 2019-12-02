@@ -14,8 +14,7 @@ import mxv_pkg::*;
 
 enum logic [3:0]{FE, L, CMD, N, EF, CMD2, EF2, RESEND} State;
 
-always_ff@(posedge clk or negedge rst)
-begin
+always_ff@(posedge clk or negedge rst) begin
 if(rst == 0)
 	State <= FE;
 else
@@ -99,8 +98,7 @@ else
 	endcase	
 end
 
-always_comb
-begin
+always_comb begin
 	enable_cont = 0;
 	enable_reg_N = 0;
 	enable_CMD2 = 1;
