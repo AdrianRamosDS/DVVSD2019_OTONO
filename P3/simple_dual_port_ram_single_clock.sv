@@ -3,7 +3,7 @@ import mxv_pkg::*;
 (
 	input clk, we,
 	input uint8_t data,
-	input [(AW_RAM-1):0] read_addr, write_addr,
+	input [(AW_FIFO-1):0] read_addr, write_addr,
 	output uint8_t q
 );
 

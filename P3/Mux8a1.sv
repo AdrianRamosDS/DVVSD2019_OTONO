@@ -18,7 +18,7 @@ always@(*) begin
 			3'b111: A_output = H_input;
 			default:
 			begin
-				A_output = 0;
+				A_output = 16'b0000000000000000;
 			end
 		endcase	
 end
