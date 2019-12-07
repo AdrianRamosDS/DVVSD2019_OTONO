@@ -94,12 +94,12 @@ add wave -noupdate -group F4 -radix hexadecimal /TB_Matriz_x_Vector/DUV/F4_FIFO/
 add wave -noupdate -group F4 /TB_Matriz_x_Vector/DUV/F4_FIFO/full
 add wave -noupdate -group F4 /TB_Matriz_x_Vector/DUV/F4_FIFO/empty
 add wave -noupdate -group F4 /TB_Matriz_x_Vector/DUV/F4_FIFO/DataOutput
-add wave -noupdate -group F1 /TB_Matriz_x_Vector/DUV/F1_FIFO/push
-add wave -noupdate -group F1 /TB_Matriz_x_Vector/DUV/F1_FIFO/pop
-add wave -noupdate -group F1 -radix hexadecimal /TB_Matriz_x_Vector/DUV/F1_FIFO/DataInput
-add wave -noupdate -group F1 /TB_Matriz_x_Vector/DUV/F1_FIFO/full
-add wave -noupdate -group F1 /TB_Matriz_x_Vector/DUV/F1_FIFO/empty
-add wave -noupdate -group F1 -radix hexadecimal /TB_Matriz_x_Vector/DUV/F1_FIFO/DataOutput
+add wave -noupdate -expand -group F1 /TB_Matriz_x_Vector/DUV/F1_FIFO/push
+add wave -noupdate -expand -group F1 /TB_Matriz_x_Vector/DUV/F1_FIFO/pop
+add wave -noupdate -expand -group F1 -radix hexadecimal /TB_Matriz_x_Vector/DUV/F1_FIFO/DataInput
+add wave -noupdate -expand -group F1 /TB_Matriz_x_Vector/DUV/F1_FIFO/full
+add wave -noupdate -expand -group F1 /TB_Matriz_x_Vector/DUV/F1_FIFO/empty
+add wave -noupdate -expand -group F1 -radix hexadecimal /TB_Matriz_x_Vector/DUV/F1_FIFO/DataOutput
 add wave -noupdate -group F5 /TB_Matriz_x_Vector/DUV/F5_FIFO/push
 add wave -noupdate -group F5 /TB_Matriz_x_Vector/DUV/F5_FIFO/pop
 add wave -noupdate -group F5 -radix hexadecimal /TB_Matriz_x_Vector/DUV/F5_FIFO/DataInput
@@ -149,7 +149,7 @@ add wave -noupdate -expand -group {Procesador 3} -radix hexadecimal /TB_Matriz_x
 add wave -noupdate -expand -group {Procesador 3} -radix hexadecimal /TB_Matriz_x_Vector/DUV/P3/Data_vector
 add wave -noupdate -expand -group {Procesador 3} -radix hexadecimal /TB_Matriz_x_Vector/DUV/P3/Data_output
 TreeUpdate [SetDefaultTree]
-WaveRestoreCursors {{Cursor 1} {155 ps} 0}
+WaveRestoreCursors {{Cursor 1} {479 ps} 0}
 quietly wave cursor active 1
 configure wave -namecolwidth 199
 configure wave -valuecolwidth 100
@@ -165,4 +165,4 @@ configure wave -griddelta 40
 configure wave -timeline 0
 configure wave -timelineunits ps
 update
-WaveRestoreZoom {0 ps} {167 ps}
+WaveRestoreZoom {185 ps} {517 ps}

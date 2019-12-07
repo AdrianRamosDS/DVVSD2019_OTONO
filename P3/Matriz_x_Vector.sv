@@ -9,6 +9,7 @@ import mxv_pkg::*;
 		input uint8_t FIFO_input,
 		
 		output flag_Tx,
+		output [2:0]	CMD_out,
 		output [DW-1:0]Data_Tx
 );
 
@@ -53,7 +54,6 @@ wire [DW-1:0] CMD1_Received_Data_w, CMD2_Received_Data_w, CMD3_Received_Data_w, 
 wire [7:0] sel_FIFO_wire;
 wire [8:0] push_input;
 
-
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 ///////////////////////								CONTADORES Tx							////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -85,6 +85,8 @@ Demux1a4 Demux_Comandos
 	.Selector(CMD_selector_w),	 .Data_input(FIFO_input),
 	.Data_out_0(CMD1_Received_Data_w),	.Data_out_1(CMD2_Received_Data_w),	.Data_out_2(CMD3_Received_Data_w),	.Data_out_3(CMD4_Received_Data_w)
 );
+
+assign CMD_out = CMD_selector_w;
 //////////////////////////////////////////////////////////////////////////////////////////////////////
 //////////////////        MÁQUINAS DE ESTADO     //////////////////////////////////////////
 //////////////////////////////////////////////////////////////////////////////////////////////////////
@@ -145,30 +147,6 @@ Register N_module
 	.clk(clk),	.rst(rst),	.enb(enb_N_reg_w),	.Sync_rst(1'b0),
 	.Data_Input(CMD1_Received_Data_w),
 	.Data_Output(N_w)
-);
-//////////////////////////////////////////////////////////////////
-////////////////////// MEMORIA RAM PARA RESULTADO FINAL /////////////////////////////////////////////////////////////////////////////////////
-/////////////////////////////////////////////////////////////////////////////////
-Mux8a1 Mux_8a1_module
-(
-	.A_input(Register_0_output),	.B_input(Register_1_output),	.C_input(Register_2_output),	.D_input(Register_3_output),
-	.E_input(Register_4_output),	.F_input(Register_5_output),	.G_input(Register_6_output),	.H_input(Register_7_output), 
-	.Sel(sel_mux_wire), 
-	.A_output(data_result_w)
-);
-simple_dual_port_ram_single_clock_16bits FINAL_RAM_MEMORY
-(					//((contadorN_P0_w>=N_input-1)?1:0)&enb_POP_wire&(~(flag_0a1_final_wire&flag_P3_final_w))), //enb_we_wire   
-	.clk(clk),	.we(enb_cont_mux_flag),	.data(data_result_w),	.read_addr(read_address_ram_wire),	.write_addr(sel_mux_wire),	
-	.q(Data_Tx)
-);
-
-Counter contadorMux8_1_module
-(
-	.clk(clk),	.rst(rst),	.enb(enb_cont_mux_flag),///////////////////////      enb_cont_mux_flag
-	.sync_rst(0),
-	.N_input(N_w-1), //CAMBIE ERA N
-	.Flag(contador_mux_flag_wire),
-	.Counting(sel_mux_wire)
 );
 
 Counter contador_4_N_module
@@ -435,6 +413,28 @@ Register_DBL_DW Register_7_module
 	.Data_Output(Register_7_output)
 );
 
+///////////////////////////////////////////////////////////////////////////////////
+////////////////////// MEMORIA RAM PARA RESULTADO FINAL //////////////////////////
+/////////////////////////////////////////////////////////////////////////////////
+Counter contadorMux8_1_module
+(
+	.clk(clk),	.rst(rst),	.enb(enb_cont_mux_flag),	.sync_rst(0),	.N_input(N_w-1),
+	.Flag(contador_mux_flag_wire),
+	.Counting(sel_mux_wire)
+);
+Mux8a1 Mux_8a1_module
+(
+	.A_input(Register_0_output),	.B_input(Register_1_output),	.C_input(Register_2_output),	.D_input(Register_3_output),
+	.E_input(Register_4_output),	.F_input(Register_5_output),	.G_input(Register_6_output),	.H_input(Register_7_output), 
+	.Sel(sel_mux_wire), 
+	.A_output(data_result_w)
+);
+simple_dual_port_ram_single_clock_16bits FINAL_RAM_MEMORY
+(					//((contadorN_P0_w>=N_input-1)?1:0)&enb_POP_wire&(~(flag_0a1_final_wire&flag_P3_final_w))), //enb_we_wire   
+	.clk(clk),	.we(enb_cont_mux_flag),	.data(data_result_w),	.read_addr(read_address_ram_wire),	.write_addr(sel_mux_wire),	
+	.q(Data_Tx)
+);
+///////////////////////////////////////////////////////////////////////////////
 
 
 endmodule
